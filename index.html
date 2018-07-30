@@ -1,0 +1,1139 @@
+﻿<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="starfield.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    #container {
+        width: 100%;
+        height: 70px;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: 0;
+    }
+
+    body {
+        font: 400 15px Lato, sans-serif;
+        line-height: 1.8;
+        color: #818181;
+    }
+
+    h2 {
+        font-size: 24px;
+        text-transform: uppercase;
+        color: #303030;
+        font-weight: 600;
+        margin-bottom: 30px;
+    }
+
+    h4 {
+        font-size: 19px;
+        line-height: 1.375em;
+        color: #303030;
+        font-weight: 400;
+        margin-bottom: 30px;
+    }
+
+    .container-fluid {
+        padding: 60px 50px;
+    }
+
+    .bg-grey {
+        background-color: #f6f6f6;
+    }
+
+    .logo-small {
+        color: #f4511e;
+        font-size: 50px;
+    }
+
+    .logo {
+        color: #f4511e;
+        font-size: 200px;
+    }
+
+    .thumbnail {
+        padding: 0 0 15px 0;
+        border: none;
+        border-radius: 0;
+    }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            margin-bottom: 10px;
+        }
+
+    .carousel-control.right, .carousel-control.left {
+        background-image: none;
+        color: #f4511e;
+    }
+
+    .carousel-indicators li {
+        border-color: #f4511e;
+    }
+
+        .carousel-indicators li.active {
+            background-color: #f4511e;
+        }
+
+    .item h4 {
+        font-size: 19px;
+        line-height: 1.375em;
+        font-weight: 400;
+        font-style: italic;
+        margin: 70px 0;
+    }
+
+    .item span {
+        font-style: normal;
+    }
+
+    .panel {
+        border: 1px solid #f4511e;
+        border-radius: 0 !important;
+        transition: box-shadow 0.5s;
+    }
+
+        .panel:hover {
+            box-shadow: 5px 0px 40px rgba(0,0,0, .2);
+        }
+
+    .panel-footer .btn:hover {
+        border: 1px solid #f4511e;
+        background-color: #fff !important;
+        color: #f4511e;
+    }
+
+    .panel-heading {
+        color: #fff !important;
+        background-color: #f4511e !important;
+        padding: 25px;
+        border-bottom: 1px solid transparent;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    .panel-footer {
+        background-color: white !important;
+    }
+
+        .panel-footer h3 {
+            font-size: 32px;
+        }
+
+        .panel-footer h4 {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .panel-footer .btn {
+            margin: 15px 0;
+            background-color: #f4511e;
+            color: #fff;
+        }
+
+    .navbar {
+        margin-bottom: 0;
+        background-color: black;
+        z-index: 9999;
+        font-size: 12px !important;
+        line-height: 1.42857143 !important;
+        letter-spacing: 4px;
+        border-radius: 0;
+        font-family: Montserrat, sans-serif;
+        border-bottom-color: white;
+    }
+
+        .navbar li a, .navbar .navbar-brand {
+            color: #fff !important;
+        }
+
+    .navbar-nav li a:hover, .navbar-nav li.active a {
+        color: #0A9880 !important;
+        background-color: #fff !important;
+    }
+
+    .navbar-default .navbar-toggle {
+        border-color: transparent;
+        color: #fff !important;
+    }
+
+    footer .glyphicon {
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: #f4511e;
+    }
+
+    .slideanim {
+        visibility: hidden;
+    }
+
+    .slide {
+        animation-name: slide;
+        -webkit-animation-name: slide;
+        animation-duration: 1s;
+        -webkit-animation-duration: 1s;
+        visibility: visible;
+    }
+
+    @keyframes slide {
+        0% {
+            opacity: 0;
+            transform: translateY(70%);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+    }
+
+    @-webkit-keyframes slide {
+        0% {
+            opacity: 0;
+            -webkit-transform: translateY(70%);
+        }
+
+        100% {
+            opacity: 1;
+            -webkit-transform: translateY(0%);
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .col-sm-4 {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .btn-lg {
+            width: 100%;
+            margin-bottom: 35px;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .logo {
+            font-size: 150px;
+        }
+    }
+
+
+    #overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        padding: 100px 25px;
+        color: white;
+        text-align: center;
+    }
+
+    #about {
+        padding-top: 450px;
+        background-color: white;
+    }
+
+    canvas {
+        height: 400px;
+        width: 100%;
+    }
+
+    img {
+        border-radius: 50%;
+    }
+    .pie {
+        margin: 10px;
+    }
+
+        .pie text {
+            font-size: 3em;
+            fill: #888;
+        }
+    .carousel-indicators {
+        bottom:0;
+        top:90%
+    }
+    .carousel-control.right{
+        right:-4%
+    }
+    .carousel-control.left{
+        left:-4%
+    }
+    .timeline {
+        list-style: none;
+        padding: 20px 0 20px;
+        position: relative;
+    }
+
+        .timeline:before {
+            top: 0;
+            bottom: 0;
+            position: absolute;
+            content: " ";
+            width: 3px;
+            background-color: #eeeeee;
+            left: 50%;
+            margin-left: -1.5px;
+        }
+
+        .timeline > li {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+            .timeline > li:before,
+            .timeline > li:after {
+                content: " ";
+                display: table;
+            }
+
+            .timeline > li:after {
+                clear: both;
+            }
+
+            .timeline > li:before,
+            .timeline > li:after {
+                content: " ";
+                display: table;
+            }
+
+            .timeline > li:after {
+                clear: both;
+            }
+
+            .timeline > li > .timeline-panel {
+                width: 46%;
+                float: left;
+                border: 1px solid #d4d4d4;
+                border-radius: 2px;
+                padding: 20px;
+                position: relative;
+                -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+                box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+            }
+
+                .timeline > li > .timeline-panel:before {
+                    position: absolute;
+                    top: 26px;
+                    right: -15px;
+                    display: inline-block;
+                    border-top: 15px solid transparent;
+                    border-left: 15px solid #ccc;
+                    border-right: 0 solid #ccc;
+                    border-bottom: 15px solid transparent;
+                    content: " ";
+                }
+
+                .timeline > li > .timeline-panel:after {
+                    position: absolute;
+                    top: 27px;
+                    right: -14px;
+                    display: inline-block;
+                    border-top: 14px solid transparent;
+                    border-left: 14px solid #fff;
+                    border-right: 0 solid #fff;
+                    border-bottom: 14px solid transparent;
+                    content: " ";
+                }
+
+            .timeline > li > .timeline-badge {
+                color: #fff;
+                width: 50px;
+                height: 50px;
+                line-height: 50px;
+                font-size: 1.4em;
+                text-align: center;
+                position: absolute;
+                top: 16px;
+                left: 50%;
+                margin-left: -25px;
+                background-color: #999999;
+                z-index: 100;
+                border-top-right-radius: 50%;
+                border-top-left-radius: 50%;
+                border-bottom-right-radius: 50%;
+                border-bottom-left-radius: 50%;
+            }
+
+            .timeline > li.timeline-inverted > .timeline-panel {
+                float: right;
+            }
+
+                .timeline > li.timeline-inverted > .timeline-panel:before {
+                    border-left-width: 0;
+                    border-right-width: 15px;
+                    left: -15px;
+                    right: auto;
+                }
+
+                .timeline > li.timeline-inverted > .timeline-panel:after {
+                    border-left-width: 0;
+                    border-right-width: 14px;
+                    left: -14px;
+                    right: auto;
+                }
+
+    .timeline-badge.primary {
+        background-color: #2e6da4 !important;
+    }
+
+    .timeline-badge.success {
+        background-color: #3f903f !important;
+    }
+
+    .timeline-badge.warning {
+        background-color: #f0ad4e !important;
+    }
+
+    .timeline-badge.danger {
+        background-color: #d9534f !important;
+    }
+
+    .timeline-badge.info {
+        background-color: #5bc0de !important;
+    }
+
+    .timeline-title {
+        margin-top: 0;
+        color: inherit;
+    }
+
+    .timeline-body > p,
+    .timeline-body > ul {
+        margin-bottom: 0;
+    }
+
+        .timeline-body > p + p {
+            margin-top: 5px;
+        }
+</style>
+<html>
+<head>
+</head>
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+    <!--Navbar ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#about">ABOUT</a></li>
+                    <li><a href="#experience">EXPERIENCE</a></li>
+                    <li><a href="#skills">SKILLS</a></li>
+                    <li><a href="#seniorproject">SENIOR PROJECT</a></li>
+                    <li><a href="#honors">HONORS</a></li>
+                    <li><a href="#contact">CONTACT</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- The main starfield container, fills the entire screen. -->
+    <div id="container">
+        <div id="overlay">
+            <h1 style="font-size:60px;">PATRICIA PAYTON.</h1>
+            <p style="font-size:25px;">Software Engineer</p>
+        </div>
+    </div>
+
+    <!-- Container (About Section) ------------------------------------------------------------------------------------------------------------------------------------------------>
+    <div id="about" class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8">
+                <h2>ABOUT ME</h2><br>
+                <h4>Welcome! My name is Patricia Payton. I am a senior at the University of Nevada, Las Vegas. I will be graduating in December of 2018 with a Bachelor of Science in Computer Science and a minor in math. I currently have a 3.1 GPA.</h4><br>
+                <p>In December I will be looking for full time employment in the Las Vegas area. I am looking for a diverse workplace that promotes teamwork. I like to learn new things and constantly be challenged. I am interested in many different areas of computer science such as app development and cyber security. I'd love to hear from you regarding any employment opportunities and leads. My resume, contact information, and social media are located at the bottom of the page. </p>
+                <br><a href="#contact"><button class="btn btn-default btn-lg" style="color:#0A9880">Get in Touch</button></a>
+            </div>
+            <div class="col-sm-4">
+                <img src="download.jpg" alt="picture of me" style="width:400px;height:400px">
+            </div>
+        </div>
+    </div>
+    <!-- Container (Experience Section) ------------------------------------------------------------------------------------------------------------------------------------------------>
+
+    <div class="container-fluid bg-grey" id="experience">
+        <div class="row">
+            <div class="col-sm-4">
+                <span class="glyphicon glyphicon-briefcase logo slideanim" style="padding-top:100px;padding-left:20px;color:#0A9880"></span>
+            </div>
+            <div class="col-sm-8" style="padding-right:20px">
+                <h2>RELEVANT WORK EXPERIENCE</h2><br>
+                <h4 style="color:#303030;"><b>Assistant Programmer / University of Nevada, Las Vegas Department of Geoscience</b></h4>
+                <h4 style="color:#0A9880"><span class="glyphicon glyphicon-calendar" style="padding-right:10px"></span>Nov 2017 - <span style="display:inline-block;background-color:#0A9880;border-radius:15px;width:75px">.<span style="color:white">Present</span></span></h4>
+                <p>I work with a team of developers on a government website doing full stack development. I help develop new features for the website using MVC architecture. I also help maintain the website by fixing bugs and conducting 508 compliance testing. 508 compliance testing ensures that our website is accessible to all users. The languages used are: C#, Javascript, HTML/CSS, and SQL.</p>
+                <hr>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container (Services Section) -->
+    <div id="skills" class="container-fluid text-center">
+        <h2>SKILLS</h2>
+        <br>
+        <div class="row slideanim">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                <ol class="carousel-indicators" style="margin-top:30px">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active" style="background-color:black;border-color:#0A9880" i>
+                    <li data-target="#myCarousel" data-slide-to="1" style="background-color:black;border-color:#0A9880"></li>
+                    <li data-target="#myCarousel" data-slide-to="2" style="background-color:black;border-color:#0A9880"></li>
+                </ol>
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <div class="col-sm-4">
+                            <div id="chart"></div>
+                            <h2>C++</h2>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div id="chart2"></div>
+                            <h2>C#</h2>
+                        </div>
+                        <div class="col-sm-4">
+                            <div id="chart3"></div>
+                            <h2>React Native</h2>
+                        </div>
+                    </div>
+
+                    <div class="item">
+                        <div class="col-sm-4">
+                            <div id="chart4"></div>
+                            <h2>HTML</h2>
+                        </div>
+                        <div class="col-sm-4">
+                            <div id="chart5"></div>
+                            <h2>Javascript</h2>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div id="chart6"></div>
+                            <h2>SQL</h2>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="col-sm-4">
+                            <div id="chart7"></div>
+                            <h2>CSS</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Left and right controls -->
+                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" style="color:black;"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" style="color:black"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+        <br><br>
+        <div class="row slideanim" style="padding-top:20px">
+            <div class="col col-sm-4">
+                <img src="database.png" alt="database" style="width:150px;height:150px;background-color:#0A9880">
+                <h4>ORACLE DATABASE</h4>
+            </div>
+            <div class="col col-sm-4">
+                <img src="globe.png" alt="globe" style="width:150px;height:150px;background-color:#0A9880">
+                <h4>.NET FRAMEWORK</h4>
+            </div>
+            <div class="col col-sm-4">
+                <img src="github.png" alt="github icon" style="width:150px;height:150px;background-color:#0A9880">
+                <h4>GITHUB</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container (Portfolio Section) -->
+    <div id="seniorproject" class="container-fluid text-center bg-grey">
+        <h2>SENIOR PROJECT</h2><br>
+        <h4 style="color:#303030;margin-bottom:30px"><b>FluffyMates: Swipe Right, Save a life</b></h4>
+        <div class="row text-center">
+            <div class="col-sm-6">
+                <p style="text-align:left">
+                    <strong>
+                        With a team, I developed an app called FluffyMates. The crossplatform FluffyMates app allows users to search any shelter for their next fluffy
+                        family member all in one place. Shelters are limited in resources often leaving
+                        their web and traditional advertisements missing photos, health, disposition
+                        information, and care needs of and about the animals. Shelters are often limited
+                        to advertising animals in the area, losing ground to breeders who advertise and
+                        sell nationally. FluffyMates includes pictures, medical history, and all other
+                        information about the animal. Users are able to search for animals all over the
+                        country to find the perfect addition to their family. Utilizing in app advertising will
+                        allow shelters and adopters to access the app at no cost.
+                    </strong>
+                </p>
+                <p style="text-align:left">For this project we used React Native and Amazon Web Services as our database. All pet information was pulled from Petfinder API.</p>
+            </div>
+            <div class="col-sm-6">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/dk64Cyz8WVc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <br>
+
+
+    <!-- Container (HONORS Section) -->
+    <div id="honors" class="container-fluid">
+        <div class="text-center">
+            <h2>HONORS AND AWARDS</h2>
+        </div>
+        <div class="row slideanim">
+
+            <ul class="timeline">
+                <li>
+                    <div class="timeline-badge" style="background-color:#0A9880"></div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4 class="timeline-title">Senior Project Design Winner - 2018</h4>
+                        </div>
+                        <div class="timeline-body">
+                            <p>My team and I won first place in the computer science department of the Harriot Cox Senior Design Competition with our FluffyMates app.</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="timeline-inverted">
+                    <div class="timeline-badge" style="background-color:#0A9880"></div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4 class="timeline-title">Top 10% Scholarship Recipient - 2014</h4>
+                        </div>
+                        <div class="timeline-body">
+                            <p>I recieved this scholarship from UNLV for being in the top 10% of my class.</p>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="timeline-badge" style="background-color:#0A9880"></div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4 class="timeline-title">Rebel Achievement Scholarship Reciepient - 2013</h4>
+                        </div>
+                        <div class="timeline-body">
+                            <p>I recieved this scholarship from UNLV for graduating from highschool with a 3.7 GPA and an SAT score over 1130.</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="timeline-inverted">
+                    <div class="timeline-badge" style="background-color:#0A9880"></div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4 class="timeline-title">Millennium Scholarship Recipient - 2013</h4>
+                        </div>
+                        <div class="timeline-body">
+                            <p>I recieved this scholarship from the Nevada State Treasurer for having over a 2.75 GPA throughout all of high school.</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Container (Contact Section) -->
+    <div id="contact" class="container-fluid bg-grey">
+        <h2 class="text-center">CONTACT</h2>
+        <div class="row">
+            <div class="col-sm-5">
+                <p><span class="glyphicon glyphicon-map-marker" style="color:#0A9880"></span> Las Vegas, US</p>
+                <p><span class="glyphicon glyphicon-phone" style="color:#0A9880"></span> (702) 265-1987</p>
+                <p><span class="glyphicon glyphicon-envelope" style="color:#0A9880"></span> payton@unlv.nevada.edu</p>
+            </div>
+            <div class="col-sm-7 slideanim">
+                <form action="mailto:payton@unlv.nevada.edu" method="post" enctype="text/plain">
+                    <div class="row">
+                        <div class="col-sm-12 form-group">
+                            <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
+                        </div>
+                        <div class="col-sm-12 form-group">
+                            <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+                        </div>
+                    </div>
+                    <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea><br>
+                    <div class="row" style="margin-bottom:60px">
+                        <div class="col-sm-12 form-group">
+                            <input type="submit" class="btn btn-default pull-right" value="send" style="color:#0A9880">
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="container-fluid bg-4 text-center" style="background-color:black;padding:0px 0px;">
+        <h6 style="color:white">Find me on social media and download my resume</h6>
+        <div class="col col-sm-4">
+            <a href="https://www.facebook.com/tricia.payton" target="_blank">
+                <img src="facebook.png" alt="facebook link" style="width:100px;height:100px;background-color:#0A9880">
+            </a>
+        </div>
+        <div class="col col-sm-4">
+            <img src="linkedin.png" alt="linkedin link" style="width:100px;height:100px;background-color:#0A9880">
+        </div>
+        <div class="col col-sm-4">
+            <a href="resume.pdf" download="PatriciaPaytonResume">
+                <img src="download2.png" alt="download resume" style="width:100px;height:100px;background-color:#0A9880">
+            </a>
+        </div>
+    </footer>
+</body>
+</html>
+<script>
+    //animation
+    $(window).scroll(function () {
+        $(".slideanim").each(function () {
+            var pos = $(this).offset().top;
+
+            var winTop = $(window).scrollTop();
+            if (pos < winTop + 600) {
+                $(this).addClass("slide");
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        // Add smooth scrolling to all links in navbar + footer link
+        $(".navbar a, footer a[href='#myPage']").on('click', function (event) {
+            // Make sure this.hash has a value before overriding default behavior
+            if (this.hash !== "") {
+                // Prevent default anchor click behavior
+                event.preventDefault();
+
+                // Store hash
+                var hash = this.hash;
+
+                // Using jQuery's animate() method to add smooth page scroll
+                // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+                $('html, body').animate({
+                    scrollTop: $(hash).offset().top
+                }, 900, function () {
+
+                    // Add hash (#) to URL when done scrolling (default click behavior)
+                    window.location.hash = hash;
+                });
+            } // End if
+        });
+    })
+
+    //  Get the container and turn it into a starfield.
+    var container = document.getElementById('container');
+
+    var starfield = new Starfield();
+    starfield.initialise(container);
+    starfield.start();
+
+    //chart one
+    var percent = .85; // 0.0 to 1.0
+    var text = (percent * 100) + "%";
+
+    var width = 260;
+    var height = 260;
+    var thickness = 30;
+    var duration = 750;
+    var foregroundColor = "#0A9880";
+    var backgroundColor = "#ccc";
+
+    var radius = Math.min(width, height) / 2;
+    var color = d3.scaleOrdinal([foregroundColor, backgroundColor]);
+
+    var svg = d3.select("#chart")
+        .append('svg')
+        .attr('class', 'pie')
+        .attr('width', width)
+        .attr('height', height);
+
+    var g = svg.append('g')
+        .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+
+    var arc = d3.arc()
+        .innerRadius(radius - thickness)
+        .outerRadius(radius);
+
+    var pie = d3.pie()
+        .sort(null);
+
+    var path = g.selectAll('path')
+        .data(pie([0, 1]))
+        .enter()
+        .append('path')
+        .attr('d', arc)
+        .attr('fill', function (d, i) {
+            return color(i);
+        })
+        .each(function (d) { this._current = d; });
+
+
+    path.data(pie([percent, 1 - percent])).transition()
+        .duration(duration)
+        .attrTween('d', function (d) {
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function (t) {
+                return arc(interpolate(t));
+            }
+        });
+
+    g.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('dy', '.35em')
+        .text(text);
+
+    //chart two
+    var percent = .85; // 0.0 to 1.0
+    var text = (percent * 100) + "%";
+
+    var width = 260;
+    var height = 260;
+    var thickness = 30;
+    var duration = 750;
+    var foregroundColor = "#0A9880";
+    var backgroundColor = "#ccc";
+
+    var radius = Math.min(width, height) / 2;
+    var color = d3.scaleOrdinal([foregroundColor, backgroundColor]);
+
+    var svg = d3.select("#chart2")
+        .append('svg')
+        .attr('class', 'pie')
+        .attr('width', width)
+        .attr('height', height);
+
+    var g = svg.append('g')
+        .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+
+    var arc = d3.arc()
+        .innerRadius(radius - thickness)
+        .outerRadius(radius);
+
+    var pie = d3.pie()
+        .sort(null);
+
+    var path = g.selectAll('path')
+        .data(pie([0, 1]))
+        .enter()
+        .append('path')
+        .attr('d', arc)
+        .attr('fill', function (d, i) {
+            return color(i);
+        })
+        .each(function (d) { this._current = d; });
+
+
+    path.data(pie([percent, 1 - percent])).transition()
+        .duration(duration)
+        .attrTween('d', function (d) {
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function (t) {
+                return arc(interpolate(t));
+            }
+        });
+
+    g.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('dy', '.35em')
+        .text(text);
+
+    //chart three
+    var percent = .70; // 0.0 to 1.0
+    var text = (percent * 100) + "%";
+
+    var width = 260;
+    var height = 260;
+    var thickness = 30;
+    var duration = 750;
+    var foregroundColor = "#0A9880";
+    var backgroundColor = "#ccc";
+
+    var radius = Math.min(width, height) / 2;
+    var color = d3.scaleOrdinal([foregroundColor, backgroundColor]);
+
+    var svg = d3.select("#chart3")
+        .append('svg')
+        .attr('class', 'pie')
+        .attr('width', width)
+        .attr('height', height);
+
+    var g = svg.append('g')
+        .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+
+    var arc = d3.arc()
+        .innerRadius(radius - thickness)
+        .outerRadius(radius);
+
+    var pie = d3.pie()
+        .sort(null);
+
+    var path = g.selectAll('path')
+        .data(pie([0, 1]))
+        .enter()
+        .append('path')
+        .attr('d', arc)
+        .attr('fill', function (d, i) {
+            return color(i);
+        })
+        .each(function (d) { this._current = d; });
+
+
+    path.data(pie([percent, 1 - percent])).transition()
+        .duration(duration)
+        .attrTween('d', function (d) {
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function (t) {
+                return arc(interpolate(t));
+            }
+        });
+
+    g.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('dy', '.35em')
+        .text(text);
+
+    //chart four
+    var percent = .85; // 0.0 to 1.0
+    var text = (percent * 100) + "%";
+
+    var width = 260;
+    var height = 260;
+    var thickness = 30;
+    var duration = 750;
+    var foregroundColor = "#0A9880";
+    var backgroundColor = "#ccc";
+
+    var radius = Math.min(width, height) / 2;
+    var color = d3.scaleOrdinal([foregroundColor, backgroundColor]);
+
+    var svg = d3.select("#chart4")
+        .append('svg')
+        .attr('class', 'pie')
+        .attr('width', width)
+        .attr('height', height);
+
+    var g = svg.append('g')
+        .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+
+    var arc = d3.arc()
+        .innerRadius(radius - thickness)
+        .outerRadius(radius);
+
+    var pie = d3.pie()
+        .sort(null);
+
+    var path = g.selectAll('path')
+        .data(pie([0, 1]))
+        .enter()
+        .append('path')
+        .attr('d', arc)
+        .attr('fill', function (d, i) {
+            return color(i);
+        })
+        .each(function (d) { this._current = d; });
+
+
+    path.data(pie([percent, 1 - percent])).transition()
+        .duration(duration)
+        .attrTween('d', function (d) {
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function (t) {
+                return arc(interpolate(t));
+            }
+        });
+
+    g.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('dy', '.35em')
+        .text(text);
+
+    //chart five
+    var percent = .80; // 0.0 to 1.0
+    var text = (percent * 100) + "%";
+
+    var width = 260;
+    var height = 260;
+    var thickness = 30;
+    var duration = 750;
+    var foregroundColor = "#0A9880";
+    var backgroundColor = "#ccc";
+
+    var radius = Math.min(width, height) / 2;
+    var color = d3.scaleOrdinal([foregroundColor, backgroundColor]);
+
+    var svg = d3.select("#chart5")
+        .append('svg')
+        .attr('class', 'pie')
+        .attr('width', width)
+        .attr('height', height);
+
+    var g = svg.append('g')
+        .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+
+    var arc = d3.arc()
+        .innerRadius(radius - thickness)
+        .outerRadius(radius);
+
+    var pie = d3.pie()
+        .sort(null);
+
+    var path = g.selectAll('path')
+        .data(pie([0, 1]))
+        .enter()
+        .append('path')
+        .attr('d', arc)
+        .attr('fill', function (d, i) {
+            return color(i);
+        })
+        .each(function (d) { this._current = d; });
+
+
+    path.data(pie([percent, 1 - percent])).transition()
+        .duration(duration)
+        .attrTween('d', function (d) {
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function (t) {
+                return arc(interpolate(t));
+            }
+        });
+
+    g.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('dy', '.35em')
+        .text(text);
+
+    //chart six
+    var percent = .60; // 0.0 to 1.0
+    var text = (percent * 100) + "%";
+
+    var width = 260;
+    var height = 260;
+    var thickness = 30;
+    var duration = 750;
+    var foregroundColor = "#0A9880";
+    var backgroundColor = "#ccc";
+
+    var radius = Math.min(width, height) / 2;
+    var color = d3.scaleOrdinal([foregroundColor, backgroundColor]);
+
+    var svg = d3.select("#chart6")
+        .append('svg')
+        .attr('class', 'pie')
+        .attr('width', width)
+        .attr('height', height);
+
+    var g = svg.append('g')
+        .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+
+    var arc = d3.arc()
+        .innerRadius(radius - thickness)
+        .outerRadius(radius);
+
+    var pie = d3.pie()
+        .sort(null);
+
+    var path = g.selectAll('path')
+        .data(pie([0, 1]))
+        .enter()
+        .append('path')
+        .attr('d', arc)
+        .attr('fill', function (d, i) {
+            return color(i);
+        })
+        .each(function (d) { this._current = d; });
+
+
+    path.data(pie([percent, 1 - percent])).transition()
+        .duration(duration)
+        .attrTween('d', function (d) {
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function (t) {
+                return arc(interpolate(t));
+            }
+        });
+
+    g.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('dy', '.35em')
+        .text(text);
+
+    //chart seven
+    var percent = .50; // 0.0 to 1.0
+    var text = (percent * 100) + "%";
+
+    var width = 260;
+    var height = 260;
+    var thickness = 30;
+    var duration = 750;
+    var foregroundColor = "#0A9880";
+    var backgroundColor = "#ccc";
+
+    var radius = Math.min(width, height) / 2;
+    var color = d3.scaleOrdinal([foregroundColor, backgroundColor]);
+
+    var svg = d3.select("#chart7")
+        .append('svg')
+        .attr('class', 'pie')
+        .attr('width', width)
+        .attr('height', height);
+
+    var g = svg.append('g')
+        .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+
+    var arc = d3.arc()
+        .innerRadius(radius - thickness)
+        .outerRadius(radius);
+
+    var pie = d3.pie()
+        .sort(null);
+
+    var path = g.selectAll('path')
+        .data(pie([0, 1]))
+        .enter()
+        .append('path')
+        .attr('d', arc)
+        .attr('fill', function (d, i) {
+            return color(i);
+        })
+        .each(function (d) { this._current = d; });
+
+
+    path.data(pie([percent, 1 - percent])).transition()
+        .duration(duration)
+        .attrTween('d', function (d) {
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function (t) {
+                return arc(interpolate(t));
+            }
+        });
+
+    g.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('dy', '.35em')
+        .text(text);
+</script>
